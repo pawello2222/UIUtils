@@ -43,7 +43,12 @@ public struct SplitPicker<
     private var showMultiLabels: Bool
     private let label: () -> Label
 
-    public init(selection: Binding<Selection>, items: [Item], showMultiLabels: Bool = false, label: @escaping () -> Label) {
+    public init(
+        selection: Binding<Selection>,
+        items: [Item],
+        showMultiLabels: Bool = false,
+        label: @escaping () -> Label
+    ) {
         self._selection = selection
         self.items = items
         self.showMultiLabels = showMultiLabels
