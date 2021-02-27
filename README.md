@@ -1,3 +1,3 @@
 # UIUtils
 
-A description of this package.
+A collection of useful SwiftUI components.
