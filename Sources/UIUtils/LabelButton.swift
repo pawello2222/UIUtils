@@ -9,22 +9,42 @@
 import SwiftUI
 
 @available(iOS 13.0, *)
-public struct LabelButton: View {
-    private let text: String
+public struct LabelButton<Label>: View where Label: View {
     private let imageName: String?
     private let imageSize: CGFloat
     private let color: Color
+    private let label: () -> Label
+
+    public init(
+        imageName: String? = nil,
+        imageSize: CGFloat = 32,
+        color: Color = .clear,
+        label: @escaping () -> Label
+    ) {
+        self.imageName = imageName
+        self.imageSize = imageSize
+        self.color = color
+        self.label = label
+    }
+
+    public init(
+        imageName: String? = nil,
+        imageSize: CGFloat = 32,
+        color: Color = .clear,
+        label: @autoclosure @escaping () -> Label
+    ) {
+        self.init(imageName: imageName, imageSize: imageSize, color: color, label: label)
+    }
 
     public init(
         text: String,
         imageName: String? = nil,
         imageSize: CGFloat = 32,
         color: Color = .clear
-    ) {
-        self.text = text
-        self.imageName = imageName
-        self.imageSize = imageSize
-        self.color = color
+    ) where Label == Text {
+        self.init(imageName: imageName, imageSize: imageSize, color: color) {
+            Text(text)
+        }
     }
 
     public var body: some View {
@@ -39,7 +59,7 @@ public struct LabelButton: View {
                     )
                     .padding(.trailing, 2)
             }
-            Text(text)
+            label()
                 .foregroundColor(.primary)
             Spacer()
             Image(systemName: "chevron.right")
