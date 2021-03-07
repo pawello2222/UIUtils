@@ -8,9 +8,9 @@
 
 import SwiftUI
 
-@available(iOS 13.0, *)
+@available(iOS 14.0, *)
 public struct PickerItem<
-    Selection: Hashable & LosslessStringConvertible,
+    Selection: Hashable,
     Short: Hashable & LosslessStringConvertible,
     Long: Hashable & LosslessStringConvertible
 >: Hashable {
@@ -27,31 +27,33 @@ public struct PickerItem<
 
 // MARK: - Split Picker
 
-@available(iOS 13.0, *)
+@available(iOS 14.0, *)
 public struct SplitPicker<
     Label: View,
-    Selection: Hashable & LosslessStringConvertible,
+    Selection: Hashable,
     ShortValue: Hashable & LosslessStringConvertible,
     LongValue: Hashable & LosslessStringConvertible
 >: View {
     public typealias Item = PickerItem<Selection, ShortValue, LongValue>
 
     @State private var isLinkActive = false
-
     @Binding private var selection: Selection
     private let items: [Item]
     private var showMultiLabels: Bool
+    private var multiLabelWidth: CGFloat
     private let label: () -> Label
 
     public init(
         selection: Binding<Selection>,
         items: [Item],
         showMultiLabels: Bool = false,
+        multiLabelWidth: CGFloat = 50,
         label: @escaping () -> Label
     ) {
         self._selection = selection
         self.items = items
         self.showMultiLabels = showMultiLabels
+        self.multiLabelWidth = multiLabelWidth
         self.label = label
     }
 
@@ -71,7 +73,7 @@ public struct SplitPicker<
 
 // MARK: - Data
 
-@available(iOS 13.0, *)
+@available(iOS 14.0, *)
 private extension SplitPicker {
     var selectedItem: Item? {
         items.first { selection == $0.selection }
@@ -80,12 +82,12 @@ private extension SplitPicker {
 
 // MARK: - Selection View
 
-@available(iOS 13.0, *)
+@available(iOS 14.0, *)
 private extension SplitPicker {
     var selectionView: some View {
         Form {
-            ForEach(items, id: \.self) { item in
-                itemView(item: item)
+            ForEach(items, id: \.self) {
+                itemView(item: $0)
             }
         }
     }
@@ -93,13 +95,13 @@ private extension SplitPicker {
 
 // MARK: - Item View
 
-@available(iOS 13.0, *)
+@available(iOS 14.0, *)
 private extension SplitPicker {
     func itemView(item: Item) -> some View {
-        Button(action: {
+        Button {
             selection = item.selection
             isLinkActive = false
-        }) {
+        } label: {
             HStack {
                 if showMultiLabels {
                     itemMultiLabelView(item: item)
@@ -120,7 +122,7 @@ private extension SplitPicker {
 
 // MARK: - Item Label View
 
-@available(iOS 13.0, *)
+@available(iOS 14.0, *)
 private extension SplitPicker {
     func itemLabelView(item: Item) -> some View {
         HStack {
@@ -131,7 +133,7 @@ private extension SplitPicker {
     }
 }
 
-@available(iOS 13.0, *)
+@available(iOS 14.0, *)
 private extension SplitPicker {
     func itemMultiLabelView(item: Item) -> some View {
         HStack {
@@ -140,7 +142,7 @@ private extension SplitPicker {
                     .foregroundColor(.primary)
                 Spacer()
             }
-            .frame(maxWidth: 50)
+            .frame(maxWidth: multiLabelWidth)
             Text(String(item.long))
                 .font(.subheadline)
                 .foregroundColor(.secondary)
