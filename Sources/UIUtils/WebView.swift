@@ -20,14 +20,14 @@ public struct WebView: UIViewRepresentable {
     }
 
     public func makeUIView(context: UIViewRepresentableContext<WebView>) -> WKWebView {
-        self.webView.navigationDelegate = context.coordinator
+        webView.navigationDelegate = context.coordinator
         if let url = URL(string: viewModel.link) {
-            self.webView.load(URLRequest(url: url))
+            webView.load(URLRequest(url: url))
         }
-        return self.webView
+        return webView
     }
 
-    public func updateUIView(_ uiView: WKWebView, context: UIViewRepresentableContext<WebView>) {
+    public func updateUIView(_: WKWebView, context _: UIViewRepresentableContext<WebView>) {
         return
     }
 
@@ -37,20 +37,20 @@ public struct WebView: UIViewRepresentable {
 }
 
 @available(iOS 13.0, *)
-public extension WebView {
-    class Coordinator: NSObject, WKNavigationDelegate {
+extension WebView {
+    public class Coordinator: NSObject, WKNavigationDelegate {
         private var viewModel: ViewModel
 
         public init(_ viewModel: ViewModel) {
             self.viewModel = viewModel
         }
 
-        public func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
+        public func webView(_: WKWebView, didFinish _: WKNavigation!) {
             viewModel.didFinishLoading = true
         }
 
         public func webView(
-            _ webView: WKWebView,
+            _: WKWebView,
             decidePolicyFor navigationAction: WKNavigationAction,
             decisionHandler: @escaping (WKNavigationActionPolicy) -> Void
         ) {
@@ -70,8 +70,8 @@ public extension WebView {
 }
 
 @available(iOS 13.0, *)
-public extension WebView {
-    class ViewModel: ObservableObject {
+extension WebView {
+    public class ViewModel: ObservableObject {
         @Published public var link: String
         @Published public var blockOutgoingRequests: Bool
         @Published public var didFinishLoading = false
