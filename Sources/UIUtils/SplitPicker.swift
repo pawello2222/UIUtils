@@ -50,7 +50,7 @@ public struct SplitPicker<
         multiLabelWidth: CGFloat = 50,
         label: @escaping () -> Label
     ) {
-        self._selection = selection
+        _selection = selection
         self.items = items
         self.showMultiLabels = showMultiLabels
         self.multiLabelWidth = multiLabelWidth
@@ -74,8 +74,8 @@ public struct SplitPicker<
 // MARK: - Data
 
 @available(iOS 14.0, *)
-private extension SplitPicker {
-    var selectedItem: Item? {
+extension SplitPicker {
+    private var selectedItem: Item? {
         items.first { selection == $0.selection }
     }
 }
@@ -83,8 +83,8 @@ private extension SplitPicker {
 // MARK: - Selection View
 
 @available(iOS 14.0, *)
-private extension SplitPicker {
-    var selectionView: some View {
+extension SplitPicker {
+    private var selectionView: some View {
         Form {
             ForEach(items, id: \.self) {
                 itemView(item: $0)
@@ -96,8 +96,8 @@ private extension SplitPicker {
 // MARK: - Item View
 
 @available(iOS 14.0, *)
-private extension SplitPicker {
-    func itemView(item: Item) -> some View {
+extension SplitPicker {
+    private func itemView(item: Item) -> some View {
         Button {
             selection = item.selection
             isLinkActive = false
@@ -123,8 +123,8 @@ private extension SplitPicker {
 // MARK: - Item Label View
 
 @available(iOS 14.0, *)
-private extension SplitPicker {
-    func itemLabelView(item: Item) -> some View {
+extension SplitPicker {
+    private func itemLabelView(item: Item) -> some View {
         HStack {
             Text(String(item.long))
                 .foregroundColor(.primary)
@@ -134,8 +134,8 @@ private extension SplitPicker {
 }
 
 @available(iOS 14.0, *)
-private extension SplitPicker {
-    func itemMultiLabelView(item: Item) -> some View {
+extension SplitPicker {
+    private func itemMultiLabelView(item: Item) -> some View {
         HStack {
             HStack {
                 Text(String(item.short))

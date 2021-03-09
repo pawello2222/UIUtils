@@ -29,8 +29,8 @@ public struct ActivityIndicator: View {
 }
 
 @available(iOS 13.0, *)
-private extension ActivityIndicator {
-    func circleGroup(geometrySize: CGSize, index: Int) -> some View {
+extension ActivityIndicator {
+    private func circleGroup(geometrySize: CGSize, index: Int) -> some View {
         circle(geometrySize: geometrySize, index: index)
             .frame(width: geometrySize.width, height: geometrySize.height)
             .rotationEffect(isAnimating ? .degrees(360) : .degrees(0))
@@ -42,7 +42,7 @@ private extension ActivityIndicator {
             )
     }
 
-    func circle(geometrySize: CGSize, index: Int) -> some View {
+    private func circle(geometrySize: CGSize, index: Int) -> some View {
         Circle()
             .frame(width: geometrySize.width / 5, height: geometrySize.height / 5)
             .scaleEffect(isAnimating ? 0.2 + CGFloat(index) / 5 : 1 - CGFloat(index) / 5)

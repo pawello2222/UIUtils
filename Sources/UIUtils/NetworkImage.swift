@@ -42,8 +42,8 @@ public struct NetworkImage<
 
     public init(url: URL?) where LoadingContent == ProgressView<EmptyView, EmptyView>, ErrorContent == Image {
         self.url = url
-        self.loadingContent = { ProgressView() }
-        self.errorContent = { Image(systemName: "photo") }
+        loadingContent = { ProgressView() }
+        errorContent = { Image(systemName: "photo") }
     }
 
     public var body: some View {
