@@ -9,14 +9,13 @@
 import SwiftUI
 
 @available(iOS 13.0, *)
-public struct TabViewItem<SelectionValue>: ViewModifier where SelectionValue: Hashable {
-    @Binding private var selectedIndex: SelectionValue
-    private let index: SelectionValue
+public struct TabViewItem<Selection>: ViewModifier where Selection: Hashable {
+    @Environment(\.tabSelection) private var tabSelection
+    private let index: Selection
     private let text: String
     private let imageName: String
 
-    public init(selectedIndex: Binding<SelectionValue>, index: SelectionValue, text: String, imageName: String) {
-        self._selectedIndex = selectedIndex
+    public init(index: Selection, text: String, imageName: String) {
         self.index = index
         self.text = text
         self.imageName = imageName
@@ -32,25 +31,53 @@ public struct TabViewItem<SelectionValue>: ViewModifier where SelectionValue: Ha
     }
 
     private var image: some View {
-        guard selectedIndex == index else {
+        guard tabSelection.wrappedValue == index as AnyHashable else {
             return Image(systemName: imageName)
         }
-        let imageName = self.imageName + ".fill"
-        if let uiImage = UIImage(systemName: imageName) {
+        let filledImageName = imageName + ".fill"
+        if let uiImage = UIImage(systemName: filledImageName) {
             return Image(uiImage: uiImage)
         }
-        return Image(systemName: self.imageName)
+        return Image(systemName: imageName)
     }
 }
 
 @available(iOS 13.0, *)
-public extension View {
-    func tabItem<Selection>(
-        selectedIndex: Binding<Selection>,
-        index: Selection,
+extension View {
+    public func tabItem<IndexValue>(
+        index: IndexValue,
         text: String,
         imageName: String
+    ) -> some View where IndexValue: Hashable {
+        modifier(TabViewItem(index: index, text: text, imageName: imageName))
+    }
+}
+
+@available(iOS 13.0, *)
+extension View {
+    public func tabSelection<Selection>(
+        _ selection: Binding<Selection>
     ) -> some View where Selection: Hashable {
-        modifier(TabViewItem(selectedIndex: selectedIndex, index: index, text: text, imageName: imageName))
+        environment(\.tabSelection, .init(
+            get: {
+                selection.wrappedValue as AnyHashable
+            },
+            set: {
+                guard let value = $0 as? Selection else { return }
+                selection.wrappedValue = value
+            }
+        ))
+    }
+}
+
+@available(iOS 13.0, *)
+extension EnvironmentValues {
+    private struct TabSelectionKey: EnvironmentKey {
+        static let defaultValue: Binding<AnyHashable> = .constant(0)
+    }
+
+    public var tabSelection: Binding<AnyHashable> {
+        get { self[TabSelectionKey] }
+        set { self[TabSelectionKey] = newValue }
     }
 }
