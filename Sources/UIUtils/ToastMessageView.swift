@@ -22,8 +22,8 @@ public struct ToastMessage: Equatable {
 }
 
 @available(iOS 13.0, *)
-public extension ToastMessage {
-    enum Style {
+extension ToastMessage {
+    public enum Style {
         case error
         case info
         case success
@@ -61,8 +61,8 @@ public struct ToastMessageView: View {
 }
 
 @available(iOS 13.0, *)
-public extension ToastMessageView {
-    var backgroundColor: Color {
+extension ToastMessageView {
+    public var backgroundColor: Color {
         switch message.style {
         case .info: return .gray
         case .success: return .green
@@ -73,8 +73,8 @@ public extension ToastMessageView {
 }
 
 @available(iOS 13.0, *)
-public extension ToastMessageView {
-    var textColor: Color {
+extension ToastMessageView {
+    public var textColor: Color {
         switch message.style {
         case .info: return .black
         case .success: return .white
