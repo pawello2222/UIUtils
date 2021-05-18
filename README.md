@@ -1,5 +1,5 @@
 <p align="center">
-        <i>This repository is archived. It is now a part of <a href="https://github.com/pawello2222/PhantomKit">PhantomKit.</i>
+    <i>This repository has been archived. It is now a part of <a href="https://github.com/pawello2222/PhantomKit">PhantomKit.</i>
 </p>
 <h1></h1>
 
