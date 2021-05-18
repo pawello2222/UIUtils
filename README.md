@@ -1,3 +1,8 @@
+<p align="center">
+        <i>This repository is archived. It is now a part of <a href="https://github.com/pawello2222/PhantomKit">PhantomKit.</i>
+</p>
+<h1></h1>
+
 ![Language: Swift](https://img.shields.io/badge/language-swift-orange.svg)
 ![Framework: SwiftUI](https://img.shields.io/badge/framework-swiftui-brightgreen.svg)
 ![platforms](https://img.shields.io/badge/platforms-iPhone%20%7C%20iPad%20%7C%20macOS-lightgrey)
